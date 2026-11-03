@@ -1,0 +1,52 @@
+classDiagram
+    class GraphSnapshot {
+        +features
+        +sectors
+        +documented_edges
+        +documented_types
+        +extras
+    }
+    class GateConfig {
+        +hidden_dim
+        +max_context_nodes
+        +adjacent_context
+        +two_hop_context
+        +degree_aware
+        +hyper_layer
+        +sector_blend
+        +blend_l1
+        +dropout
+    }
+    class ModelOutput {
+        +logits
+        +selected_indices
+        +edge_index
+        +edge_weight
+    }
+    class SectorRiskGNN {
+        -company_encoder
+        -node_gate
+        -edge_gate
+        -blend_gate
+        -head
+        +forward(snapshot, sector) ModelOutput
+    }
+    class RelationalLayer {
+        +forward(h, edges, types, weight, blend)
+    }
+    class HyperLayer {
+        +forward(h, incidences, selected_mask)
+    }
+    class LawsuitEncoder {
+        +forward(sequences)
+    }
+    class SMEModel {
+        +forward(snapshot, sector, sequences)
+    }
+    SectorRiskGNN o-- GateConfig : configured by
+    SectorRiskGNN *-- RelationalLayer : layers
+    SectorRiskGNN *-- HyperLayer : optional
+    SectorRiskGNN ..> GraphSnapshot : reads
+    SectorRiskGNN ..> ModelOutput : returns
+    SMEModel *-- SectorRiskGNN
+    SMEModel *-- LawsuitEncoder : optional

@@ -1,0 +1,6 @@
+flowchart LR
+    G["<b>1. Snapshot graph</b><br/>companies and persons<br/>typed edges"]:::new --> S["<b>2. Pick a sector</b><br/>targets = every company<br/>in the industry<br/>query vector q"]
+    S --> T["<b>3. Gate</b><br/>scores outside nodes and edges<br/>keeps targets, linked nodes<br/>and a few learned extras"]:::new
+    T --> M["<b>4. Message passing</b><br/>own state + weighted mean<br/>+ per-relation edge counts"]:::new
+    M --> H["<b>5. Risk head</b><br/>one bankruptcy score<br/>per company in the sector"]
+    classDef new fill:#fffaf0,stroke:#dd6b20,stroke-width:2px,color:#1a202c;

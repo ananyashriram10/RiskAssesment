@@ -1,0 +1,31 @@
+Test split: 491 companies (17 also in train), prevalence 64.8%
+
+HEADLINE (best validation AUC among the 10 pre-declared candidates): ENS3 -- Rank average of the top three variants by validation: TP, TLEAR, TEAR
+  validation AUC 0.876 | test AUC 0.817 (95% CI 0.778, 0.853) | without the 17 overlapping companies 0.816 (CI 0.775, 0.853)
+  bootstrap P(test AUC > paper's 0.848) = 0.052 | gap to paper -0.031
+  reference (tabular, not a GNN): extra_trees_leaf2 on 'degree_all' features, test AUC 0.861 (valid 0.863); GNN minus reference -0.044
+  Caveats: the paper's number comes from a slightly different split and uses relation types 0-11 only; the timing columns were removed after a test-shift diagnosis, so this is exploratory evidence, not a fresh test.
+
+variant                                                           description  valid_AUC  test_AUC  AUC_lo  AUC_hi  test_AUC_no_overlap  test_AP  seed_valid_AUC_mean  seed_test_AUC_mean  median_epoch
+     T0                     Timing-free reference (round-3 base architecture)      0.852     0.790   0.749   0.830                0.788    0.871                0.839               0.775          15.5
+     T2                      T0 + two message-passing layers (control for TA)      0.864     0.799   0.758   0.837                0.797    0.875                0.846               0.780          15.0
+     TP                        T0 + two layers, two-hop context, sector blend      0.874     0.798   0.756   0.837                0.800    0.873                0.858               0.783          15.0
+     TL                               T0 + lawsuit vectors without age inputs      0.854     0.796   0.755   0.834                0.794    0.880                0.839               0.776          14.5
+     TE                                       T0 + quantile numeric embedding      0.850     0.787   0.745   0.826                0.785    0.871                0.836               0.769          13.0
+     TA          T2 + sum/max/mean aggregation, degree MLP, jumping knowledge      0.862     0.816   0.778   0.853                0.816    0.889                0.846               0.799          10.0
+     TR                                            T0 + pairwise ranking loss      0.855     0.790   0.749   0.829                0.788    0.872                0.841               0.776          13.5
+   TEAR                                Embedding + aggregators + ranking loss      0.864     0.824   0.785   0.859                0.822    0.897                0.848               0.800           8.5
+  TLEAR              Embedding + aggregators + ranking loss + lawsuit vectors      0.872     0.817   0.777   0.853                0.815    0.888                0.851               0.792          11.0
+   T0NA   Diagnostic: T0 without set-up age (not part of the headline choice)      0.842     0.773   0.730   0.815                0.771    0.852                0.828               0.757          14.5
+   ENS3 Rank average of the top three variants by validation: TP, TLEAR, TEAR      0.876     0.817   0.778   0.853                0.816    0.890                  NaN                 NaN           NaN
+
+                                                     contrast     A    B  AUC_A_minus_B     lo     hi  P(A>B)
+                                            More layers alone    T2   T0          0.009 -0.004  0.022   0.918
+                                            Numeric embedding    TE   T0         -0.003 -0.013  0.008   0.279
+Multi-aggregator, degree MLP, jumping knowledge (same layers)    TA   T2          0.017  0.005  0.031   0.995
+                                                 Ranking loss    TR   T0          0.000 -0.006  0.006   0.518
+                            Sector blend with two-hop context    TP   T0          0.008 -0.009  0.025   0.829
+                                  Lawsuit vectors without age    TL   T0          0.006 -0.009  0.021   0.757
+          Embedding + aggregators + ranking loss vs reference  TEAR   T0          0.034  0.014  0.054   1.000
+                  Lawsuit vectors added to the combined model TLEAR TEAR         -0.007 -0.021  0.006   0.152
+                                          Dropping set-up age  T0NA   T0         -0.016 -0.031 -0.001   0.018

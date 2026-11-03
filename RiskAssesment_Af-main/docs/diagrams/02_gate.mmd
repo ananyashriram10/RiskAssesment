@@ -1,0 +1,28 @@
+flowchart LR
+    subgraph TS["Target sector (all kept and scored)"]
+        c1(("company"))
+        c2(("company"))
+        c3(("company"))
+        c4(("company"))
+    end
+    p1["person<br/>linked, always kept"]:::person
+    p2["person<br/>linked, always kept"]:::person
+    p3["person<br/>linked, always kept"]:::person
+    subgraph OI["Other industries"]
+        o1(("chosen by<br/>the gate")):::chosen
+        o2(("chosen by<br/>the gate")):::chosen
+        o3(("ignored")):::dropped
+        o4(("ignored")):::dropped
+    end
+    c1 --- p1
+    c2 --- p1
+    c2 --- p2
+    c3 --- p2
+    c4 --- p3
+    p1 --- o1
+    p2 --- o2
+    p3 -.- o3
+    p3 -.- o4
+    classDef person fill:#e9d8fd,stroke:#6b46c1,stroke-width:2px,color:#1a202c;
+    classDef chosen fill:#feebc8,stroke:#dd6b20,stroke-width:2px,color:#1a202c;
+    classDef dropped fill:#edf2f7,stroke:#a0aec0,stroke-dasharray:4 3,color:#4a5568;

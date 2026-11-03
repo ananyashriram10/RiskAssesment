@@ -1,0 +1,9 @@
+flowchart LR
+    n1["person j1<br/>executive link"] --> mean
+    n2["person j2<br/>stakeholder link"] --> mean
+    n3["company j3<br/>investor link"] --> mean
+    mean["<b>Weighted mean of messages</b><br/>W h_j scaled by relation type<br/>and the gate weight"] --> plus(("+"))
+    own["<b>Own state</b><br/>W_self h_i"] --> plus
+    cnt["<b>Edge-count channel (new)</b><br/>log(1 + count per relation)<br/>then W_deg"]:::new --> plus
+    plus --> relu["ReLU"] --> out["new state h_i'<br/>goes to the risk head"]
+    classDef new fill:#fffaf0,stroke:#dd6b20,stroke-width:2px,color:#1a202c;
