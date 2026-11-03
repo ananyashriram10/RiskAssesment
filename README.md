@@ -1,4 +1,4 @@
-# RiskAssesment_Af
+# Risk Assesment
 
 A **sector-gated graph neural network** for company bankruptcy risk: pick an industry, keep every company in it, let a learned gate choose which outside companies, people and links matter, then score each company in the sector.
 
